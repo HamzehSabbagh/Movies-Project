@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import Button from './Button';
 
 export default function NavBar() {
     return <nav className='flex justify-between w-full border-b border-gray-200 px-3 py-6'>
@@ -13,10 +14,10 @@ export default function NavBar() {
         </div>
 
         <div className='flex gap-6'>
-            <Link className='rounded-lg border border-gray-600 px-3 py-2 bg-gray-400 text-black'>Movies</Link>
-            <Link className='rounded-lg border border-gray-600 px-3 py-2 bg-gray-400 text-black'>Categories</Link>
-            <Link className='rounded-lg border border-gray-600 px-3 py-2 bg-gray-400 text-black'>Scripts</Link>
-            <Link className='rounded-lg border border-gray-600 px-3 py-2 bg-gray-400 text-black'>Movies</Link>
+            <Button href='/movies'>Movies</Button>
+            <Button href='/categories'>Categories</Button>
+            <Button href='/scripts'>Scripts</Button>
+            <Button href='/'>Artists</Button>
         </div>
 
     </nav>

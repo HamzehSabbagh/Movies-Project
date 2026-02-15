@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,11 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $movies = Movie::latest()->paginate(3);
+
+        return Inertia::render('movies/index', [
+            'movies' => $movies,
+        ]);
     }
 
     /**
@@ -20,7 +25,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('movies/create');
     }
 
     /**
