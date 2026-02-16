@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Faker\Guesser\Name;
+
 class MovieController extends Controller
 {
     /**
@@ -45,7 +47,7 @@ class MovieController extends Controller
         ]);
 
         Movie::create($validated);
-        
+
         return redirect('/movies');
     }
 
@@ -54,7 +56,11 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        $movie->load('category');
+
+        return Inertia::render('movies/show', [
+            'movie' => $movie,
+        ]);
     }
 
     /**

@@ -13,15 +13,18 @@ type props = {
 export default function Create({ categories }: props) {
 
     const [categoryId, setCategoryId] = useState('')
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") ?? "";
 
     return <div>
         <NavBar />
         <div className='flex justify-center py-12'>
             <form method='POST' action='/movies' className='flex flex-col justify-between items-center py-12 border-gray-400 w-fit px-12 rounded-lg border-8 bg-gray-800 text-gray-400 gap-5'>
 
+                <input type="hidden" name="_token" value={csrfToken} />
+
                 <Input htmlFor="title" name="title" id='title' placeholder="movie title">Title</Input>
 
-                <Input htmlFor="description" name="descirption" id='descirption' placeholder="movie descirption">Descirption</Input>
+                <Input htmlFor="description" name="description" id='description' placeholder="movie description">Description</Input>
 
                 <Input htmlFor="release_date" name="release_date" id='release_date' placeholder="movie release_date">Release Date</Input>
 

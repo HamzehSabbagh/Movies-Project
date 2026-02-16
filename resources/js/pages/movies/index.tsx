@@ -18,7 +18,7 @@ type Props = {
 export default function Index({ movies }: Props) {
     return <div className="h-auto w-auto">
         <NavBar />
-        <div className="px-20 py-6">
+        <div className="px-20 py-6 flex flex-col gap-5">
             {movies.data.length === 0 ? <p>Sorry We Currently Don't Have Any Movies</p> :
                 movies.data.map((m) => (
                     <div key={m.id} className='border border-white text-2xl w-auto rounded-lg px-3 py-3 flex justify-between bg-purple-400 text-gray-300'>
@@ -29,12 +29,14 @@ export default function Index({ movies }: Props) {
                         </div>
 
                         <div>
-                            <Button href='#'>Edit</Button>
+                            <a href={`/movies/${m.id}`} className="border border-white px-2 py-1 rounded-lg text-sm hover:bg-purple-300">Details</a>
                         </div>
 
                     </div>
                 ))
             }
         </div>
+
+        <div className="text-end px-20"><Button href='/movies/create'>Create a Movie</Button></div>
     </div>
 }
