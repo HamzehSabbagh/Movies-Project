@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Inertia\Inertia;
+use App\Models\Movie;
 class CategoryController extends Controller
 {
     /**
@@ -12,7 +13,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::latest()->get();
+
+        return Inertia::render('categories/index', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -20,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('categories/create');
     }
 
     /**
@@ -28,7 +33,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = request()->validate([
+            'name' => ['string', 'required', 'max:50']
+        ]);
+
+        Category::create($validated);
+
+        return redirect('/categories');
     }
 
     /**
@@ -36,7 +47,9 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return Inertia::render('categories/show', [
+            'category' => $category->load('movies'),
+        ]);
     }
 
     /**

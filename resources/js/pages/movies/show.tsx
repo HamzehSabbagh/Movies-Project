@@ -22,14 +22,14 @@ export default function Show({ movie }: Props) {
         <div key={movie.id} className='border border-white text-2xl w-auto rounded-lg px-3 py-3 bg-purple-400 text-gray-300 flex flex-col justify-between'>
             <div className='flex flex-col'>
                 <p className="font-bold text-center text-4xl pb-10">{movie.title}</p>
-                <p>Description: <span className="">{movie.description}</span></p>
+                <p className="pb-5">Description: <span className="font-semibold">{movie.description}</span></p>
                 <p>Release Date: {movie.release_date}</p>
-                <p key={movie.category?.id}>{movie.category?.name}</p>
+                <p className="pt-5" key={movie.category?.id}>Category: <span className="font-black">{movie.category?.name}</span></p>
             </div>
 
             <div className="flex justify-between pt-10">
                 <a href='/movies' className="border border-white px-4 py-3 rounded-lg hover:bg-purple-300">Back</a>
-                <a href='#' className="border border-white px-4 py-3 rounded-lg hover:bg-purple-300">Edit</a>
+                <a href={`/movies/${movie.id}/edit`} className="border border-white px-4 py-3 rounded-lg hover:bg-purple-300">Edit</a>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ import Button from './Button';
 export default function NavBar() {
     return <nav className='flex justify-between w-full border-b border-gray-200 px-3 py-6'>
         <div>
-            <p className='font-bold text-4xl text-purple-500'>Great Cinema</p>
+            <a href='/' className='font-bold text-4xl text-purple-500'>Great Cinema</a>
         </div>
 
         <div className='flex justify-between gap-4'>

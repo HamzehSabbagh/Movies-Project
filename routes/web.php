@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,3 +18,5 @@ Route::get('/contact', function(){
 });
 
 Route::resource('movies',MovieController::class);
+
+Route::resource('/categories', CategoryController::class);

@@ -24,7 +24,7 @@ export default function Index({ movies }: Props) {
                     <div key={m.id} className='border border-white text-2xl w-auto rounded-lg px-3 py-3 flex justify-between bg-purple-400 text-gray-300'>
                         <div className='flex flex-col'>
                             <p>Title: {m.title}</p>
-                            <p>Description: {m.description.slice(0, 100)} {m.description.length === 100 && "..."}</p>
+                            <p>Description: {m.description.slice(0, 100)} {m.description.length > 100 && "..."}</p>
                             <p>Release Date: {m.release_date}</p>
                         </div>
 

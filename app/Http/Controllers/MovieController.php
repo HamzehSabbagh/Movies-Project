@@ -68,7 +68,13 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        //
+        $movie->load('category');
+        $categories = Category::select('id', 'name')->get();
+
+        return Inertia::render('movies/edit', [
+            'movie' => $movie->load('category'),
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -76,7 +82,16 @@ class MovieController extends Controller
      */
     public function update(Request $request, Movie $movie)
     {
-        //
+        $validated = request()->validate([
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['string', 'min:3', 'nullable'],
+            'release_date' => ['date', 'required'],
+            'category_id' => ['integer' , 'required', 'exists:categories,id'],
+        ]);
+
+        $movie->update($validated);
+
+        return redirect("/movies/{$movie->id}");
     }
 
     /**
@@ -84,6 +99,8 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        //
+        $movie->delete();
+
+        return redirect('/movies');
     }
 }
