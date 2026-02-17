@@ -68,7 +68,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validated = request()->validate([
+            'name' => ['required', 'string', 'max:50']
+        ]);
+
+        $category->update($validated);
+
+        return redirect("/categories/{$category->id}");
     }
 
     /**
@@ -76,6 +82,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect('/categories');
     }
 }

@@ -17,7 +17,7 @@ export default function NavBar() {
             <Button href='/movies'>Movies</Button>
             <Button href='/categories'>Categories</Button>
             <Button href='/scripts'>Scripts</Button>
-            <Button href='/'>Artists</Button>
+            <Button href='/artists'>Artists</Button>
         </div>
 
     </nav>

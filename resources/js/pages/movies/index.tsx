@@ -29,7 +29,7 @@ export default function Index({ movies }: Props) {
                         </div>
 
                         <div>
-                            <a href={`/movies/${m.id}`} className="border border-white px-2 py-1 rounded-lg text-sm hover:bg-purple-300">Details</a>
+                            <a href={`/movies/${m.id}`} className="border border-white px-2 py-1 rounded-lg text-sm hover:bg-purple-500">Details</a>
                         </div>
 
                     </div>

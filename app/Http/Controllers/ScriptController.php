@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Script;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ScriptController extends Controller
 {
@@ -12,7 +13,11 @@ class ScriptController extends Controller
      */
     public function index()
     {
-        //
+        $scripts = Script::latest()->get();
+
+        return Inertia::render('scripts/index', [
+            'scripts' => $scripts,
+        ]);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +22,7 @@ Route::get('/contact', function(){
 Route::resource('movies',MovieController::class);
 
 Route::resource('/categories', CategoryController::class);
+
+Route::resource('/scripts', ScriptController::class);
+
+Route::resource('/artists', ArtistController::class);

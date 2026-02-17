@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use Illuminate\Http\Request;
-
+use Inertia\Inertia;
 class ArtistController extends Controller
 {
     /**
@@ -12,7 +12,11 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        //
+        $artists = Artist::latest()->get();
+
+        return Inertia::render('artists/index', [
+            'artists' => $artists,
+        ]);
     }
 
     /**

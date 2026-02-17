@@ -1,6 +1,6 @@
 import NavBar from "@/components/nav-bar";
 
-export default function Index() {
+export default function Show() {
     return <div>
         <NavBar />
     </div>

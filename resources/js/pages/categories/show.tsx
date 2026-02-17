@@ -30,10 +30,14 @@ export default function Show({ category }: Props) {
                     </p>
 
                 </div>
-                <div className="text-center pb-16"><a
+                <div className="text-center pb-5"><a
                     href={`/categories/${category.id}/edit`}
-                    className="border border-gray-400 px-3 py-2 rounded-lg w-fit hover:bg-gray-900"
+                    className="border border-gray-400 px-3 py-2 rounded-lg w-fit hover:bg-gray-200"
                 >Edit</a></div>
+                <div className="text-center pb-16"><a
+                    href={'/categories'}
+                    className="border border-gray-400 px-3 py-2 rounded-lg w-fit hover:bg-gray-200"
+                >Back</a></div>
             </div>
             <div>
                 <p className="text-center">List of Movies that Contain this Category</p>
@@ -41,7 +45,7 @@ export default function Show({ category }: Props) {
             <div className='flex px-2'>
                 {category.movies.map((e) => <a
                     href={`/movies/${e.id}`}
-                    className="border border-gray-400 rounded-2xl px-12 py-12 w-1/4 hover:bg-gray-800"
+                    className="border border-gray-400 rounded-2xl px-12 py-12 w-1/4 hover:bg-gray-200"
                     key={e.id}>
                     <p className="text-2xl font-bold">{e.title}</p>
                 </a>)}
