@@ -28,8 +28,8 @@ export default function Show({ movie }: Props) {
             </div>
 
             <div className="flex justify-between pt-10">
-                <a href='/movies' className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500">Back</a>
-                <a href={`/movies/${movie.id}/edit`} className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500">Edit</a>
+                <a href='/movies' className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500 text-sm">Back</a>
+                <a href={`/movies/${movie.id}/edit`} className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500 text-sm">Edit</a>
             </div>
         </div>
     </div>

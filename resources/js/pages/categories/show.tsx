@@ -42,7 +42,7 @@ export default function Show({ category }: Props) {
             <div>
                 <p className="text-center">List of Movies that Contain this Category</p>
             </div>
-            <div className='flex px-2'>
+            <div className='flex px-2 justify-around flex-wrap gap-4'>
                 {category.movies.map((e) => <a
                     href={`/movies/${e.id}`}
                     className="border border-gray-400 rounded-2xl px-12 py-12 w-1/4 hover:bg-gray-200"

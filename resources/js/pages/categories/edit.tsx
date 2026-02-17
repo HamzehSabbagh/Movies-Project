@@ -39,7 +39,7 @@ export default function Edit({ category }: Props) {
                     value={data.name}
                     onChange={(e) => setData("name", e.target.value)}
                 ><p className="w-full text-center py-3 font-bold text-2xl">Edit this Category</p></Input>
-                <a href='/categories' className="border border-gray-400 px-3 py-2 rounded-lg text-center hover:bg-gray-200">Back</a>
+                <a href={`/categories/${category.id}`} className="border border-gray-400 px-3 py-2 rounded-lg text-center hover:bg-gray-200">Back</a>
                 <button className="border border-gray-400 px-3 py-2 rounded-lg text-center bg-red-600 hover:bg-red-700" type='button' onClick={() => form.delete(`/categories/${category.id}`)} >Delete</button>
                 <button className="border border-gray-400 px-3 py-2 rounded-lg bg-blue-500 hover:bg-blue-600" type='submit' disabled={processing}>Save</button>
             </form>

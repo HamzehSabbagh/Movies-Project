@@ -24,8 +24,8 @@ export default function Create() {
                     value={data.name}
                     onChange={(e) => setData("name", e.target.value)}
                 ><p className="w-full text-center py-3 font-bold text-2xl">Create a Category</p></Input>
-                <a href='/categories' className="border border-gray-400 px-3 py-2 rounded-lg text-center hover:bg-gray-900">Back</a>
-                <button className="border border-gray-400 px-3 py-2 rounded-lg bg-blue-500 hover:bg-blue-400" type='submit' disabled={processing}>Save</button>
+                <a href='/categories' className="border border-gray-400 px-3 py-2 rounded-lg text-center hover:bg-gray-200">Back</a>
+                <button className="border border-gray-400 px-3 py-2 rounded-lg bg-blue-400 hover:bg-blue-500" type='submit' disabled={processing}>Save</button>
             </form>
         </div>
     </div>
