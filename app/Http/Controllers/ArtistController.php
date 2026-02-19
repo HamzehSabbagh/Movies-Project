@@ -43,8 +43,11 @@ class ArtistController extends Controller
             'movie_ids.*' => ['integer', 'exists:movies,id']
         ]);
 
-        $artist = Artist::Create($validated);
-        $artist->movies->sync($validated['movie_ids'] ?? []);
+        $artist = Artist::create([
+            'name' => $validated['name'],
+            'role' => $validated['role'],
+        ]);
+        $artist->movies()->sync($validated['movie_ids'] ?? []);
 
         return redirect('/artists');
     }
@@ -54,7 +57,9 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        //
+        return Inertia::render('artists/show', [
+            'artist' => $artist->load('movies:id,title'),
+        ]);
     }
 
     /**
@@ -62,7 +67,12 @@ class ArtistController extends Controller
      */
     public function edit(Artist $artist)
     {
-        //
+        $movies = Movie::select('id', 'title')->orderBy('title')->get();
+
+        return Inertia::render('artists/edit', [
+            'artist' => $artist->load('movies:id,title'),
+            'movies' => $movies,
+        ]);
     }
 
     /**
@@ -70,7 +80,21 @@ class ArtistController extends Controller
      */
     public function update(Request $request, Artist $artist)
     {
-        //
+        $validated = request()->validate([
+            'name' => ['string', 'required'],
+            'role' => ['string', 'required'],
+            'movie_ids' => ['array', 'nullable'],
+            'movie_ids.*' => ['integer', 'exists:movies,id']
+        ]);
+
+        $artist->update([
+            'name' => $validated['name'],
+            'role' => $validated['role'],
+        ]);
+
+        $artist->movies()->sync($validated['movie_ids'] ?? []);
+
+        return redirect("/artists/{$artist->id}");
     }
 
     /**
@@ -78,6 +102,8 @@ class ArtistController extends Controller
      */
     public function destroy(Artist $artist)
     {
-        //
+        $artist->delete();
+
+        return redirect("/artists");
     }
 }
