@@ -1,4 +1,6 @@
+import { Link } from "@inertiajs/react";
 import NavBar from "@/components/nav-bar";
+
 
 type Movie = {
     id: number;
@@ -17,19 +19,31 @@ type Props = {
 };
 
 export default function Show({ movie }: Props) {
-    return <div className="h-screen">
+    return <div className="min-h-screen bg-gray-50">
         <NavBar />
-        <div key={movie.id} className='border border-white text-2xl w-auto rounded-lg px-3 py-3 bg-purple-400 text-gray-300 flex flex-col justify-between'>
-            <div className='flex flex-col'>
-                <p className="font-bold text-center text-4xl pb-10">{movie.title}</p>
-                <p className="pb-5">Description: <span className="font-semibold">{movie.description}</span></p>
-                <p>Release Date: {movie.release_date}</p>
-                <p className="pt-5" key={movie.category?.id}>Category: <span className="font-black">{movie.category?.name}</span></p>
-            </div>
+        <div className="mx-auto w-full max-w-3xl px-4 py-10">
+            <div key={movie.id} className='space-y-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm'>
+                <div>
+                    <p className="text-3xl font-bold text-gray-900">{movie.title}</p>
+                    <p className="text-sm text-gray-500">Movie details</p>
+                </div>
 
-            <div className="flex justify-between pt-10">
-                <a href='/movies' className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500 text-sm">Back</a>
-                <a href={`/movies/${movie.id}/edit`} className="border border-white px-4 py-3 rounded-lg hover:bg-purple-500 text-sm">Edit</a>
+                <div className='space-y-4 text-gray-700'>
+                    <p>
+                        <span className="font-semibold text-gray-900">Description:</span> {movie.description}
+                    </p>
+                    <p>
+                        <span className="font-semibold text-gray-900">Release Date:</span> {movie.release_date}
+                    </p>
+                    <p>
+                        <span className="font-semibold text-gray-900">Category:</span> {movie.category?.name ?? "Uncategorized"}
+                    </p>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-2">
+                    <Link href='/movies' className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">Back</Link>
+                    <Link href={`/movies/${movie.id}/edit`} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">Edit</Link>
+                </div>
             </div>
         </div>
     </div>
