@@ -7,16 +7,22 @@ type Category = {
     id: number;
     name: string;
 }
+type Artist = {
+    id: number;
+    name: string;
+}
 type Props = {
     categories: Category[];
+    artists: Artist[];
 }
-export default function Create({ categories }: Props) {
+export default function Create({ categories, artists }: Props) {
 
     const { data, setData, processing, post } = useForm({
         'title': '',
         'description': '',
         'release_date': '',
         'category_id': '',
+        'artist_ids': [] as number[],
     })
 
     return <div>
@@ -65,6 +71,20 @@ export default function Create({ categories }: Props) {
 
                         {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="artist_ids" className="text-sm font-medium text-gray-700">Artists</label>
+                    <select
+                        id="artist_ids"
+                        value={data.artist_ids.map(String)}
+                        onChange={(e) => setData('artist_ids', Array.from(e.target.selectedOptions, (option) => Number(option.value)))}
+                        name='artist_ids'
+                        className='min-h-32 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none ring-blue-500 transition focus:ring-2'
+                        multiple
+                    >
+                        {artists.map((artist) => <option key={artist.id} value={artist.id}>{artist.name}</option>)}
+                    </select>
+                    <p className="text-xs text-gray-500">Hold Ctrl (Windows) / Cmd (Mac) to select multiple artists.</p>
                 </div>
                 <div className="flex justify-end gap-3 pt-2">
                     <a href='/movies' className='rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition hover:bg-gray-100'>Back</a>

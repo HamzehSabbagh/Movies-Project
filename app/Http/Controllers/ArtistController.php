@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class ArtistController extends Controller
@@ -24,7 +25,10 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
+        $movies = Movie::select('id', 'title')->get();
+        return Inertia::render('artists/create', [
+            'movies' => $movies,
+        ]);
     }
 
     /**
@@ -32,7 +36,17 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = request()->validate([
+            'name' => ['string', 'required'],
+            'role' => ['string', 'required'],
+            'movie_ids' => ['array', 'nullable'],
+            'movie_ids.*' => ['integer', 'exists:movies,id']
+        ]);
+
+        $artist = Artist::Create($validated);
+        $artist->movies->sync($validated['movie_ids'] ?? []);
+
+        return redirect('/artists');
     }
 
     /**

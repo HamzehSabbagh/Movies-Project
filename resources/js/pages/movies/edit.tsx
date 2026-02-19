@@ -6,6 +6,10 @@ type Category = {
     id: number;
     name: string;
 }
+type Artist = {
+    id: number;
+    name: string;
+}
 
 type Movie = {
     id: number;
@@ -13,21 +17,24 @@ type Movie = {
     description: string;
     release_date: string;
     category_id: number;
+    artists: Artist[];
 };
 
 type prop = {
     movie: Movie
     categories: Category[]
+    artists: Artist[]
 };
 
 
 
-export default function Edit({ movie, categories }: prop) {
+export default function Edit({ movie, categories, artists }: prop) {
     const { data, setData, processing, put } = useForm({
         'title': movie.title,
         'description': movie.description,
         'release_date': movie.release_date,
         'category_id': movie.category_id,
+        'artist_ids': movie.artists.map((artist) => artist.id),
 
     })
 
@@ -71,6 +78,20 @@ export default function Edit({ movie, categories }: prop) {
 
                         {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="artist_ids" className="text-sm font-medium text-gray-700">Artists</label>
+                    <select
+                        id="artist_ids"
+                        value={data.artist_ids.map(String)}
+                        onChange={(e) => setData('artist_ids', Array.from(e.target.selectedOptions, (option) => Number(option.value)))}
+                        name='artist_ids'
+                        className='min-h-32 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none ring-blue-500 transition focus:ring-2'
+                        multiple
+                    >
+                        {artists.map((artist) => <option key={artist.id} value={artist.id}>{artist.name}</option>)}
+                    </select>
+                    <p className="text-xs text-gray-500">Hold Ctrl (Windows) / Cmd (Mac) to select multiple artists.</p>
                 </div>
                 <div className='flex justify-end gap-3 pt-2'>
                     <a href={`/movies/${movie.id}`} className='rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition hover:bg-gray-100'>Back</a>

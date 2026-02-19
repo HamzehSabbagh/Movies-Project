@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use Faker\Guesser\Name;
+use App\Models\Artist;
 
 class MovieController extends Controller
 {
@@ -28,9 +28,11 @@ class MovieController extends Controller
     public function create()
     {
         $categories = Category::get();
+        $artists = Artist::select('id', 'name')->orderBy('name')->get();
 
         return Inertia::render('movies/create', [
             'categories' => $categories,
+            'artists' => $artists,
         ]);
     }
 
@@ -44,9 +46,18 @@ class MovieController extends Controller
             'description' => ['string', 'min:3', 'nullable'],
             'release_date' => ['date', 'required'],
             'category_id' => ['integer' , 'required', 'exists:categories,id'],
+            'artist_ids' => ['nullable', 'array'],
+            'artist_ids.*' => ['integer', 'exists:artists,id']
         ]);
 
-        Movie::create($validated);
+        $movie = Movie::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'release_date' => $validated['release_date'],
+            'category_id' => $validated['category_id'],
+        ]);
+
+        $movie->artists()->sync($validated['artist_ids'] ?? []);
 
         return redirect('/movies');
     }
@@ -56,7 +67,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        $movie->load('category');
+        $movie->load('category', 'artists');
 
         return Inertia::render('movies/show', [
             'movie' => $movie,
@@ -68,12 +79,14 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        $movie->load('category');
+        $movie->load(['category', 'artists']);
         $categories = Category::select('id', 'name')->get();
+        $artists = Artist::select('id', 'name')->orderBy('name')->get();
 
         return Inertia::render('movies/edit', [
-            'movie' => $movie->load('category'),
-            'categories' => $categories
+            'movie' => $movie,
+            'categories' => $categories,
+            'artists' => $artists,
         ]);
     }
 
@@ -87,9 +100,18 @@ class MovieController extends Controller
             'description' => ['string', 'min:3', 'nullable'],
             'release_date' => ['date', 'required'],
             'category_id' => ['integer' , 'required', 'exists:categories,id'],
+            'artist_ids' => ['nullable', 'array'],
+            'artist_ids.*' => ['integer', 'exists:artists,id']
         ]);
 
-        $movie->update($validated);
+        $movie->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'release_date' => $validated['release_date'],
+            'category_id' => $validated['category_id'],
+        ]);
+            
+        $movie->artists()->sync($validated['artist_ids'] ?? []);
 
         return redirect("/movies/{$movie->id}");
     }

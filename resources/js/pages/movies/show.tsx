@@ -8,6 +8,10 @@ type Movie = {
     description: string;
     release_date: string;
     category_id: number;
+    artists: {
+        id: number;
+        name: string;
+    }[];
     category?: {
         id: number;
         name: string;
@@ -38,6 +42,18 @@ export default function Show({ movie }: Props) {
                     <p>
                         <span className="font-semibold text-gray-900">Category:</span> {movie.category?.name ?? "Uncategorized"}
                     </p>
+                    <div>
+                        <p className="font-semibold text-gray-900">Artists:</p>
+                        {movie.artists.length === 0 ? (
+                            <p className="text-gray-500">No artists linked.</p>
+                        ) : (
+                            <ul className="mt-2 list-inside list-disc space-y-1">
+                                {movie.artists.map((artist) => (
+                                    <li key={artist.id}>{artist.name}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">
