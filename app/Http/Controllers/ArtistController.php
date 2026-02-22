@@ -13,7 +13,7 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artists = Artist::latest()->get();
+        $artists = Artist::latest()->paginate(6);
 
         return Inertia::render('artists/index', [
             'artists' => $artists,

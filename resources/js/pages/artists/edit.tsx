@@ -68,18 +68,34 @@ export default function Edit({ artist, movies }: Props) {
                 </Input>
 
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="movie_ids" className="text-sm font-medium text-gray-700">Movies</label>
-                    <select
-                        id='movie_ids'
-                        value={data.movie_ids.map(String)}
-                        onChange={(e) => setData('movie_ids', Array.from(e.target.selectedOptions, (option) => Number(option.value)))}
-                        multiple
-                        name='movie_ids'
-                        className='min-h-32 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none ring-blue-500 transition focus:ring-2'
-                    >
-                        {movies.map((movie) => <option key={movie.id} value={movie.id}>{movie.title}</option>)}
-                    </select>
-                    <p className="text-xs text-gray-500">Hold Ctrl (Windows) / Cmd (Mac) to select multiple movies.</p>
+                    <p className="text-sm font-medium text-gray-700">Movies</p>
+                    <div className="max-h-48 space-y-2 overflow-y-auto rounded-lg border border-gray-300 bg-white p-3">
+                        {movies.map((movie) => {
+                            const checked = data.movie_ids.includes(movie.id);
+
+                            return (
+                                <label
+                                    key={movie.id}
+                                    className="flex w-full cursor-pointer items-center rounded px-2 py-1 transition hover:bg-gray-100"
+                                >
+                                    <span className="text-sm text-gray-800">{movie.title}</span>
+                                    <input
+                                        type='checkbox'
+                                        checked={checked}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setData('movie_ids', [...data.movie_ids, movie.id]);
+                                                return;
+                                            }
+                                            setData('movie_ids', data.movie_ids.filter((id) => id !== movie.id));
+                                        }}
+                                        className="ml-auto !h-4 !w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    />
+                                </label>
+                            );
+                        })}
+                    </div>
+                    <p className="text-xs text-gray-500">Select one or more movies.</p>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">

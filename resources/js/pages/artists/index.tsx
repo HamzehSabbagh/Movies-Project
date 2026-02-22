@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import NavBar from "@/components/nav-bar";
-
+import Pagination from "@/components/Pagination";
 
 type Artist = {
     id: number;
@@ -8,8 +8,17 @@ type Artist = {
     role: string;
 }
 
+type PaginationLinks = {
+    url: string | null;
+    active: boolean;
+    label: string;
+}
+
 type Props = {
-    artists: Artist[]
+    artists: {
+        data: Artist[]
+        links: PaginationLinks[]
+    }
 }
 
 export default function Index({ artists }: Props) {
@@ -29,13 +38,13 @@ export default function Index({ artists }: Props) {
                 </Link>
             </div>
 
-            {artists.length === 0 ? (
+            {artists.data.length === 0 ? (
                 <p className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
                     There is currently no artists data.
                 </p>
             ) : (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {artists.map((a) => (
+                    {artists.data.map((a) => (
                         <div
                             key={a.id}
                             className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -54,6 +63,9 @@ export default function Index({ artists }: Props) {
                     ))}
                 </div>
             )}
+            <div className="mt-6">
+                <Pagination paginations={artists.links} />
+            </div>
         </div>
     </div>
 }
