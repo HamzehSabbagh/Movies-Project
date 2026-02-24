@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\LogoutResponse as ContractsLogoutResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 
@@ -19,10 +20,12 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    
+
     public function register(): void
     {
         $this->app->singleton(
-            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            ContractsLogoutResponse::class,
             LogoutResponse::class
         );
     }

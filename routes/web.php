@@ -4,6 +4,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,6 +43,12 @@ Route::get('/user', function () {
 Route::get('/admin', function () {
     return Inertia::render('admin-home');
 })->middleware(['auth', 'verified', 'role:admin'])->name('admin.home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 Route::resource('movies', MovieController::class)->only(['index', 'show']);
 Route::resource('categories', CategoryController::class)->only(['index', 'show']);
