@@ -37,8 +37,8 @@ export default function NavBar() {
         <nav className="w-full border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                    <Link href={isAuthenticated ? "/dashboard" : "/guest"} className="text-2xl font-extrabold tracking-tight text-slate-900">
-                        Great Cinema
+                    <Link href={isAuthenticated ? "/dashboard" : "/guest"} className="bg-gradient-to-r from-purple-500 to-red-600 bg-clip-text text-transparent">
+                        <p className='text-2xl font-extrabold tracking-tight'>Great Cinema</p>
                     </Link>
 
                     <div className="flex items-center gap-2">
@@ -112,6 +112,6 @@ export default function NavBar() {
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav >
     );
 }
