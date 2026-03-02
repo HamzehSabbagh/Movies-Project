@@ -36,7 +36,7 @@ export default function Register() {
                             <Input
                                 htmlFor="first_name"
                                 name="first_name"
-                                placeholder="John"
+                                placeholder="Joe"
                                 id="first_name"
                                 value={data.first_name}
                                 required
@@ -51,7 +51,7 @@ export default function Register() {
                             <Input
                                 htmlFor="last_name"
                                 name="last_name"
-                                placeholder="Doe"
+                                placeholder="Mama"
                                 id="last_name"
                                 value={data.last_name}
                                 required
