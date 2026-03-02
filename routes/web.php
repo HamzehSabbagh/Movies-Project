@@ -74,5 +74,5 @@ Route::get('/dashboard/image', function(Request $request){
     }
 
     return response($user->image_blob)
-        ->header('Content-Type', $user->image_mime ?? 'application/octet-stream');
+        ->header('Content-type', $user->image_mime ?? 'application/octet-stream');
 })->middleware('auth')->name('dashboard.image');
