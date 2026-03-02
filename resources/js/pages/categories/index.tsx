@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import NavBar from "@/components/nav-bar";
 import Pagination from "@/components/Pagination";
 
@@ -23,6 +23,9 @@ type Props = {
 }
 
 export default function Index({ categories }: Props) {
+    const { auth } = usePage<{ auth: { user: { role?: { name?: string } | null } | null } }>().props;
+    const isAdmin = auth.user?.role?.name?.toLowerCase() === "admin";
+
     return <div className="min-h-screen bg-gray-50">
         <NavBar />
         <div className="mx-auto w-full max-w-6xl px-4 py-8">
@@ -31,12 +34,14 @@ export default function Index({ categories }: Props) {
                     <p className="text-3xl font-bold text-gray-900">Categories</p>
                     <p className="text-sm text-gray-500">Organize movies by genre and theme.</p>
                 </div>
-                <Link
-                    href='/categories/create'
-                    className='rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500'
-                >
-                    Create Category
-                </Link>
+                {isAdmin && (
+                    <Link
+                        href='/categories/create'
+                        className='rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500'
+                    >
+                        Create Category
+                    </Link>
+                )}
             </div>
 
             {categories.data.length === 0 ? (

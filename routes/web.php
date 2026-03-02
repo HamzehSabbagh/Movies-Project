@@ -5,12 +5,9 @@ use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-Route::get('/', function () {
-    return Inertia::render('home');
-})->name('home');
 
 Route::get('/about', function(){
     return Inertia::render('about');
@@ -24,25 +21,11 @@ Route::get('/guest', function () {
     return Inertia::render('guest-home');
 })->middleware('guest')->name('guest.home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        $role = request()->user()?->role?->name;
-
-        if ($role === 'admin') {
-            return redirect()->route('admin.home');
-        }
-
-        return redirect()->route('user.home');
-    })->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function(){
+    Route::get('/dashboard', function(){
+        return Inertia::render('dashboard');
+    });
 });
-
-Route::get('/user', function () {
-    return Inertia::render('user-home');
-})->middleware(['auth', 'verified', 'role:user'])->name('user.home');
-
-Route::get('/admin', function () {
-    return Inertia::render('admin-home');
-})->middleware(['auth', 'verified', 'role:admin'])->name('admin.home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -50,14 +33,46 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('movies', MovieController::class)->only(['index', 'show']);
-Route::resource('categories', CategoryController::class)->only(['index', 'show']);
-Route::resource('scripts', ScriptController::class)->only(['index', 'show']);
-Route::resource('artists', ArtistController::class)->only(['index', 'show']);
+Route::middleware(['auth', 'role:user,admin'])->group(function(){
+    Route::resource('movies', MovieController::class)
+        ->only(['index', 'show'])
+        ->where(['movie' => '[0-9]+']);
+    Route::resource('categories', CategoryController::class)
+        ->only(['index', 'show'])
+        ->where(['category' => '[0-9]+']);
+    Route::resource('scripts', ScriptController::class)
+        ->only(['index', 'show'])
+        ->where(['script' => '[0-9]+']);
+    Route::resource('artists', ArtistController::class)
+        ->only(['index', 'show'])
+        ->where(['artist' => '[0-9]+']);
+});
+
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('movies', MovieController::class)->except(['index', 'show']);
-    Route::resource('categories', CategoryController::class)->except(['index', 'show']);
-    Route::resource('scripts', ScriptController::class)->except(['index', 'show']);
-    Route::resource('artists', ArtistController::class)->except(['index', 'show']);
+    Route::resource('movies', MovieController::class)
+        ->except(['index', 'show'])
+        ->where(['movie' => '[0-9]+']);
+    Route::resource('categories', CategoryController::class)
+        ->except(['index', 'show'])
+        ->where(['category' => '[0-9]+']);
+    Route::resource('scripts', ScriptController::class)
+        ->except(['index', 'show'])
+        ->where(['script' => '[0-9]+']);
+    Route::resource('artists', ArtistController::class)
+        ->except(['index', 'show'])
+        ->where(['artist' => '[0-9]+']);
 });
+
+Route::get('/dashboard/image', function(Request $request){
+    $user = $request->user();
+
+    abort_unless($user, 404);
+
+    if (! $user->image_blob) {
+        return response()->file(public_path('images/default-avatar.svg'));
+    }
+
+    return response($user->image_blob)
+        ->header('Content-Type', $user->image_mime ?? 'application/octet-stream');
+})->middleware('auth')->name('dashboard.image');

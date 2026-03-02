@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import NavBar from "@/components/nav-bar";
 
 
@@ -19,6 +19,9 @@ type Props = {
 }
 
 export default function Show({ artist }: Props) {
+    const { auth } = usePage<{ auth: { user: { role?: { name?: string } | null } | null } }>().props;
+    const isAdmin = auth.user?.role?.name?.toLowerCase() === "admin";
+
     return <div className="min-h-screen bg-gray-50">
         <NavBar />
         <div className="mx-auto w-full max-w-6xl px-4 py-10">
@@ -29,12 +32,14 @@ export default function Show({ artist }: Props) {
                     <span className="font-semibold text-gray-900">Role:</span> {artist.role}
                 </p>
                 <div className="mt-5 flex gap-3">
-                    <Link
-                        href={`/artists/${artist.id}/edit`}
-                        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-                    >
-                        Edit
-                    </Link>
+                    {isAdmin && (
+                        <Link
+                            href={`/artists/${artist.id}/edit`}
+                            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+                        >
+                            Edit
+                        </Link>
+                    )}
                     <Link
                         href="/artists"
                         className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"

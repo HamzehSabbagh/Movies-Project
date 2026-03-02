@@ -25,7 +25,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'role_id',
         'password',
-
+        'image_blob',
+        'image_mime',
     ];
 
     public function role(){
@@ -39,6 +40,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'password',
+        'image_blob',
+        'image_mime',
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',

@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import Button from "@/components/Button";
 import NavBar from "@/components/nav-bar";
 import Pagination from "@/components/Pagination";
@@ -26,6 +26,9 @@ type Props = {
 }
 
 export default function Index({ movies }: Props) {
+    const { auth } = usePage<{ auth: { user: { role?: { name?: string } | null } | null } }>().props;
+    const isAdmin = auth.user?.role?.name?.toLowerCase() === "admin";
+
     return <div className="min-h-screen bg-gray-50">
         <NavBar />
         <div className="mx-auto w-full max-w-6xl px-4 py-8">
@@ -34,7 +37,7 @@ export default function Index({ movies }: Props) {
                     <p className="text-3xl font-bold text-gray-900">Movies</p>
                     <p className="text-sm text-gray-500">Browse and manage your movie library.</p>
                 </div>
-                <Button href='/movies/create'>Create Movie</Button>
+                {isAdmin && <Button href='/movies/create'>Create Movie</Button>}
             </div>
 
             <div className="flex flex-col gap-4">

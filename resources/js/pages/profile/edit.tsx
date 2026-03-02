@@ -1,10 +1,12 @@
 import { useForm, usePage } from "@inertiajs/react";
+import { useState } from "react";
 import NavBar from "@/components/nav-bar";
 
 type AuthUser = {
     first_name: string;
     last_name: string;
     email: string;
+    image_url: string;
 };
 
 type SharedProps = {
@@ -16,15 +18,20 @@ type SharedProps = {
 export default function EditProfile() {
     const { auth } = usePage<SharedProps>().props;
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const profileForm = useForm({
         first_name: auth.user.first_name ?? "",
         last_name: auth.user.last_name ?? "",
         email: auth.user.email ?? "",
+        image: null as File | null
     });
 
     const deleteForm = useForm({
         password: "",
     });
+
+    const userImage = profileForm.data.image ? URL.createObjectURL(profileForm.data.image) : auth.user.image_url
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
@@ -38,15 +45,15 @@ export default function EditProfile() {
                         className="mt-8 space-y-4"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            profileForm.patch("/profile");
+                            profileForm.patch("/profile", { forceFormData: true });
                         }}
                     >
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="flex flex-col">
-                                <label htmlFor="first_name">First Name</label>
+                                <label htmlFor="first_name" className="mb-1 text-sm font-medium text-slate-700">First Name</label>
                                 <input
                                     id="first_name"
-                                    className="rounded-lg border border-gray-400 px-2 py-1"
+                                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                                     value={profileForm.data.first_name}
                                     onChange={(e) => profileForm.setData("first_name", e.target.value)}
                                 />
@@ -55,11 +62,29 @@ export default function EditProfile() {
                                 )}
                             </div>
 
+                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                <p className="mb-3 text-sm font-medium text-slate-700">Profile Image</p>
+                                <img
+                                    src={userImage}
+                                    alt="Profile"
+                                    className="mb-3 h-20 w-20 rounded-full border border-slate-200 object-cover shadow-sm"
+                                />
+                                <input
+                                    type='file'
+                                    accept="image/*"
+                                    className="block w-full text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:font-medium file:text-white hover:file:bg-slate-700"
+                                    onChange={(e) => profileForm.setData('image', e.target.files?.[0] ?? null)}
+                                />
+                                {profileForm.errors.image && (
+                                    <p className="mt-1 text-sm text-red-600">{profileForm.errors.image}</p>
+                                )}
+                            </div>
+
                             <div className="flex flex-col">
-                                <label htmlFor="last_name">Last Name</label>
+                                <label htmlFor="last_name" className="mb-1 text-sm font-medium text-slate-700">Last Name</label>
                                 <input
                                     id="last_name"
-                                    className="rounded-lg border border-gray-400 px-2 py-1"
+                                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                                     value={profileForm.data.last_name}
                                     onChange={(e) => profileForm.setData("last_name", e.target.value)}
                                 />
@@ -70,11 +95,11 @@ export default function EditProfile() {
                         </div>
 
                         <div className="flex flex-col">
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="email" className="mb-1 text-sm font-medium text-slate-700">Email</label>
                             <input
                                 id="email"
                                 type="email"
-                                className="rounded-lg border border-gray-400 px-2 py-1"
+                                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                                 value={profileForm.data.email}
                                 onChange={(e) => profileForm.setData("email", e.target.value)}
                             />
@@ -107,14 +132,23 @@ export default function EditProfile() {
                         }}
                     >
                         <div className="flex flex-col">
-                            <label htmlFor="delete_password">Password</label>
-                            <input
-                                id="delete_password"
-                                type="password"
-                                className="rounded-lg border border-gray-400 px-2 py-1"
-                                value={deleteForm.data.password}
-                                onChange={(e) => deleteForm.setData("password", e.target.value)}
-                            />
+                            <label htmlFor="delete_password" className="mb-1 text-sm font-medium text-slate-700">Password</label>
+                            <div className="mt-1 flex items-center gap-2">
+                                <input
+                                    id="delete_password"
+                                    type={showPassword ? "text" : "password"}
+                                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                                    value={deleteForm.data.password}
+                                    onChange={(e) => deleteForm.setData("password", e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    className="rounded-lg border border-slate-300 bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-200 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+                                >
+                                    {showPassword ? "Hide" : "Show"}
+                                </button>
+                            </div>
                             {deleteForm.errors.password && (
                                 <p className="mt-1 text-sm text-red-600">{deleteForm.errors.password}</p>
                             )}

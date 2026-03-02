@@ -1,6 +1,6 @@
 import NavBar from "@/components/nav-bar";
 import Pagination from "@/components/Pagination";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 type Script = {
     id: number;
@@ -28,6 +28,8 @@ type Props = {
 
 export default function Index({ scripts }: Props) {
     const PREVIEW_LIMIT = 220;
+    const { auth } = usePage<{ auth: { user: { role?: { name?: string } | null } | null } }>().props;
+    const isAdmin = auth.user?.role?.name?.toLowerCase() === "admin";
 
     return <div className="min-h-screen bg-gray-50">
         <NavBar />
@@ -37,12 +39,14 @@ export default function Index({ scripts }: Props) {
                     <p className="text-3xl font-bold text-gray-900">Scripts</p>
                     <p className="text-sm text-gray-500">Read and manage screenplay entries linked to movies.</p>
                 </div>
-                <Link
-                    href="/scripts/create"
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-                >
-                    Create Script
-                </Link>
+                {isAdmin && (
+                    <Link
+                        href="/scripts/create"
+                        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+                    >
+                        Create Script
+                    </Link>
+                )}
             </div>
 
             {scripts.data.length === 0 ? (

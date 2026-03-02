@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import NavBar from "@/components/nav-bar";
 
 type Script = {
@@ -20,6 +20,9 @@ type Props = {
 }
 
 export default function Show({ script }: Props) {
+    const { auth } = usePage<{ auth: { user: { role?: { name?: string } | null } | null } }>().props;
+    const isAdmin = auth.user?.role?.name?.toLowerCase() === "admin";
+
     return <div className="min-h-screen bg-gray-50">
         <NavBar />
         <div className="mx-auto w-full max-w-4xl px-4 py-10">
@@ -48,12 +51,14 @@ export default function Show({ script }: Props) {
                     >
                         Back
                     </Link>
-                    <Link
-                        href={`/scripts/${script.id}/edit`}
-                        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-                    >
-                        Edit
-                    </Link>
+                    {isAdmin && (
+                        <Link
+                            href={`/scripts/${script.id}/edit`}
+                            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+                        >
+                            Edit
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>

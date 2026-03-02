@@ -28,14 +28,14 @@ export default function Contact() {
             <section className="mt-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                 <p className="text-xl font-semibold text-gray-900">Quick Links</p>
                 <div className="mt-4 flex flex-wrap gap-3">
-                    <Link href="/movies/create" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
-                        Add Movie
+                    <Link href="/movies" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
+                        Browse Movies
                     </Link>
-                    <Link href="/artists/create" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-                        Add Artist
+                    <Link href="/artists" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                        Browse Artists
                     </Link>
-                    <Link href="/scripts/create" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-                        Add Script
+                    <Link href="/scripts" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+                        Browse Scripts
                     </Link>
                 </div>
             </section>
