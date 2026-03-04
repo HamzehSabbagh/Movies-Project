@@ -21,16 +21,29 @@ Route::get('/guest', function () {
     return Inertia::render('guest-home');
 })->middleware('guest')->name('guest.home');
 
-Route::middleware(['auth', 'verified'])->group(function(){
-    Route::get('/dashboard', function(){
-        return Inertia::render('dashboard');
-    });
-});
+
+Route::get('/dashboard', function(){
+    return Inertia::render('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('movies', MovieController::class)
+        ->where(['movie' => '[0-9]+']);
+    Route::resource('categories', CategoryController::class)
+        ->where(['category' => '[0-9]+']);
+    Route::resource('scripts', ScriptController::class)
+        ->where(['script' => '[0-9]+']);
+    Route::resource('artists', ArtistController::class)
+        ->where(['artist' => '[0-9]+']);
 });
 
 Route::middleware(['auth', 'role:user,admin'])->group(function(){
@@ -45,22 +58,6 @@ Route::middleware(['auth', 'role:user,admin'])->group(function(){
         ->where(['script' => '[0-9]+']);
     Route::resource('artists', ArtistController::class)
         ->only(['index', 'show'])
-        ->where(['artist' => '[0-9]+']);
-});
-
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('movies', MovieController::class)
-        ->except(['index', 'show'])
-        ->where(['movie' => '[0-9]+']);
-    Route::resource('categories', CategoryController::class)
-        ->except(['index', 'show'])
-        ->where(['category' => '[0-9]+']);
-    Route::resource('scripts', ScriptController::class)
-        ->except(['index', 'show'])
-        ->where(['script' => '[0-9]+']);
-    Route::resource('artists', ArtistController::class)
-        ->except(['index', 'show'])
         ->where(['artist' => '[0-9]+']);
 });
 
